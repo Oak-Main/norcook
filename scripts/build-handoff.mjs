@@ -201,7 +201,7 @@ const manifest = [
   `archive            ${zipPath}`,
   `archive sha256     ${zipSha}`,
   `commit             ${sha}`,
-  `branch             ${git('rev-parse', ['--abbrev-ref', 'HEAD']).trim()}`,
+  `branch             ${git('rev-parse', '--abbrev-ref', 'HEAD').trim()}`,
   `base commit        ${git('merge-base', 'HEAD', 'main').trim()} (origin/main)`,
   `files in archive   ${files.length}`,
   '',
