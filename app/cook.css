@@ -1,0 +1,379 @@
+/**
+ * Cook companion screen styles and print stylesheet.
+ *
+ * Loaded from the root layout after `globals.css`. Two clearly separated parts:
+ *
+ *   1. Screen styles for the cook companion. Restrained and derived from the
+ *      site's existing tokens (`--card`, `--border`, `--primary`, `--muted-foreground`)
+ *      so the panel reads as part of Norcook rather than a bolted-on widget.
+ *   2. `@media print` rules for the whole recipe page.
+ *
+ * The print part is the load-bearing one. Its central constraint is: **hiding a
+ * control must never hide content, and hiding a step on screen must never hide
+ * it on paper.** Both are enforced explicitly and both are covered by tests.
+ */
+
+/* ==========================================================================
+   1. Screen styles
+   ========================================================================== */
+
+/* Minimum comfortable touch target. Apple's guidance is 44px; the buttons here
+   use 44px so they stay usable one-handed while holding a pan. */
+.cook-button {
+  display: inline-flex;
+  min-height: 2.75rem;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  border: 1px solid var(--border);
+  border-radius: 0.5rem;
+  background: var(--background);
+  padding: 0 0.875rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--foreground);
+  cursor: pointer;
+  transition: background-color 120ms ease, border-color 120ms ease;
+}
+
+.cook-button:hover:not(:disabled) {
+  background: var(--muted);
+}
+
+.cook-button:disabled {
+  cursor: not-allowed;
+  opacity: 0.45;
+}
+
+/* A focus ring that stays visible against both light and dark surfaces, and is
+   never removed — keyboard users must always be able to see where they are. */
+.cook-button:focus-visible,
+.cook-ingredient:focus-within,
+.cook-step-marker:focus-within {
+  outline: 3px solid var(--ring);
+  outline-offset: 2px;
+  border-radius: 0.5rem;
+}
+
+/* Sticky only from the `lg` breakpoint up, where the two-column body has room.
+   Below that it stays in normal flow, so on a narrow phone — or when a
+   desktop user zooms past 100% — it can never sit on top of content. */
+.cook-bar {
+  grid-column: 1 / -1;
+  position: sticky;
+  top: 4rem; /* clears the 64px sticky site header */
+  z-index: 20;
+  margin-bottom: 1.5rem;
+  padding: 0.875rem 1rem;
+  border: 1px solid var(--border);
+  border-radius: 0.75rem;
+  background: var(--card);
+}
+
+@media (max-width: 1023px) {
+  .cook-bar {
+    position: static;
+  }
+}
+
+/* Anchor targets clear the sticky bar plus the site header, so programmatic
+   scrolling never parks a step underneath either of them. */
+.cook-step {
+  scroll-margin-top: 7rem;
+  scroll-margin-bottom: 2rem;
+}
+
+.cook-step-text {
+  padding-top: 0.25rem;
+  font-size: 1.0625rem;
+  line-height: 1.75;
+  color: color-mix(in oklab, var(--foreground) 85%, transparent);
+}
+
+/* A genuinely large tap target: the whole row toggles the line.
+   `scroll-margin` keeps a row that is scrolled to from landing underneath the
+   64px sticky site header, which would otherwise swallow the click. */
+.cook-ingredient {
+  display: flex;
+  min-height: 2.75rem;
+  cursor: pointer;
+  align-items: flex-start;
+  gap: 0.75rem;
+  border-radius: 0.5rem;
+  padding: 0.375rem 0.5rem;
+  font-size: 0.9375rem;
+  line-height: 1.6;
+  scroll-margin-top: 5.5rem;
+  color: color-mix(in oklab, var(--foreground) 85%, transparent);
+  transition: background-color 120ms ease;
+}
+
+.cook-ingredient:hover {
+  background: var(--muted);
+}
+
+[data-cook-ingredient-id][data-checked='true'] .flex-1 {
+  color: var(--muted-foreground);
+  text-decoration: line-through;
+  text-decoration-thickness: 1px;
+}
+
+/* The native input is kept in the accessibility tree and fully focusable; it is
+   made transparent rather than hidden so keyboard and pointer both work. */
+.cook-checkbox {
+  position: absolute;
+  width: 1.5rem;
+  height: 1.5rem;
+  margin: 0;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.cook-checkbox-box {
+  display: flex;
+  width: 1.25rem;
+  height: 1.25rem;
+  margin-top: 0.3125rem;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid var(--border);
+  border-radius: 0.3125rem;
+  background: var(--background);
+  color: var(--primary-foreground);
+  /* The visual box sits on top of the transparent input. Without this the
+     check glyph swallows the click and the checkbox appears dead. The row is a
+     <label>, so a tap anywhere still toggles it. */
+  pointer-events: none;
+}
+
+.cook-checkbox-box svg {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.cook-checkbox:checked + .cook-checkbox-box {
+  border-color: var(--primary);
+  background: var(--primary);
+}
+
+.cook-checkbox:checked + .cook-checkbox-box svg {
+  opacity: 1;
+}
+
+.cook-checkbox:focus-visible + .cook-checkbox-box {
+  outline: 3px solid var(--ring);
+  outline-offset: 2px;
+}
+
+/* Step marker: a number inside a circle that becomes a tick when complete. */
+.cook-step-marker {
+  position: relative;
+  display: flex;
+  width: 2rem;
+  height: 2rem;
+  flex-shrink: 0;
+  cursor: pointer;
+  align-items: center;
+  justify-content: center;
+  border-radius: 9999px;
+  background: var(--primary);
+}
+
+.cook-step-number {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--primary-foreground);
+}
+
+[data-cook-done='true'] .cook-step-marker {
+  background: var(--primary);
+  box-shadow: inset 0 0 0 2px var(--background);
+}
+
+[data-cook-done='true'] .cook-step-text {
+  color: var(--muted-foreground);
+}
+
+/* Focus mode. Only the active step is shown on screen — and only on screen.
+   The print block below cancels this rule. */
+[data-cook-focused='true'] .cook-step:not([data-cook-active='true']) {
+  display: none;
+}
+
+/* ==========================================================================
+   2. Print
+   ========================================================================== */
+
+@media print {
+  @page {
+    margin: 16mm 14mm;
+  }
+
+  html,
+  body {
+    background: #fff !important;
+    color: #000 !important;
+  }
+
+  /* --- site chrome is not recipe content ------------------------------- */
+  header,
+  footer,
+  nav,
+  [data-cook-bar],
+  [data-cook-js-only],
+  [data-cook-keep-off-print] {
+    display: none !important;
+  }
+
+  /* --- the recipe page renders its title inside the hero overlay -------- */
+  /* The hero cannot simply be removed: the <h1>, description and time/difficulty
+     all live inside it. Instead it is flattened into a plain title block, and
+     the white overlay text is forced to black so it stays legible on paper. */
+  [data-recipe-hero] {
+    position: static !important;
+    height: auto !important;
+    min-height: 0 !important;
+    margin-top: 0 !important;
+    overflow: visible !important;
+    padding: 0 0 6mm !important;
+    border-bottom: 1px solid #bbb !important;
+  }
+
+  [data-recipe-hero-media],
+  [data-recipe-hero-content],
+  [data-recipe-hero-content] > div {
+    position: static !important;
+    display: block !important;
+  }
+
+  [data-recipe-hero-media] {
+    display: none !important;
+  }
+
+  [data-recipe-hero] * {
+    color: #000 !important;
+    -webkit-text-fill-color: #000 !important;
+    text-shadow: none !important;
+    backdrop-filter: none !important;
+    background: transparent !important;
+    border-color: #999 !important;
+  }
+
+  /* --- layout: one column, nothing pinned ------------------------------ */
+  [data-cook-grid],
+  [data-cook-grid] > * {
+    display: block !important;
+    width: auto !important;
+    max-width: none !important;
+  }
+
+  /* A sticky rail inside a paged medium is a classic source of clipped and
+     repeated content, so every pinned element is unpinned for print. */
+  [data-cook-ingredients] {
+    position: static !important;
+    margin-bottom: 8mm !important;
+  }
+
+  [data-cook-steps] {
+    break-before: auto;
+  }
+
+  /* --- interactive controls go; their content stays --------------------- */
+  .cook-checkbox,
+  .cook-checkbox-box {
+    display: none !important;
+  }
+
+  /* Gathered/checked state is a screen affordance. A printed recipe is a fresh
+     one, so the marks are dropped and the authored text prints as plain text. */
+  .cook-ingredient {
+    min-height: 0 !important;
+    padding: 0 !important;
+    background: none !important;
+    border-radius: 0 !important;
+  }
+
+  [data-cook-ingredient-id][data-checked='true'] .flex-1 {
+    color: #000 !important;
+    text-decoration: none !important;
+  }
+
+  /* The marker becomes a plain hanging number aligned to the first line of the
+     instruction, not a circle centred in the row's full height. */
+  .cook-step-marker {
+    width: auto !important;
+    height: auto !important;
+    background: none !important;
+    box-shadow: none !important;
+    align-items: flex-start !important;
+    padding-top: 0.25rem !important;
+  }
+
+  .cook-step-number {
+    font-size: 11pt !important;
+    font-weight: 700 !important;
+    color: #000 !important;
+  }
+
+  .cook-step-number::after {
+    content: '.';
+  }
+
+  .sr-only {
+    position: static !important;
+    width: auto !important;
+    height: auto !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    overflow: visible !important;
+    clip: auto !important;
+    white-space: normal !important;
+  }
+
+  /* --- FOCUS MODE MUST NOT HIDE STEPS ON PAPER ------------------------- */
+  /* This is the rule the print tests exist to protect. If focus mode is on,
+     every step — not just the active one — is printed. */
+  [data-cook-focused='true'] .cook-step:not([data-cook-active='true']) {
+    display: block !important;
+  }
+
+  /* --- pagination hygiene ---------------------------------------------- */
+  .cook-step,
+  [data-cook-group-title] {
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+
+  .cook-step {
+    margin-bottom: 4mm;
+    padding-bottom: 4mm;
+    border-bottom: 1px dotted #ccc;
+  }
+
+  [data-recipe-safety] {
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+
+  h1,
+  h2,
+  h3 {
+    break-after: avoid-page;
+    page-break-after: avoid;
+  }
+
+  /* Keep a printed authority source usable on paper. */
+  [data-recipe-safety] a[href^='http']::after {
+    content: ' (' attr(href) ')';
+    font-size: 8pt;
+    word-break: break-all;
+  }
+
+  /* Never let a long authored line overflow the paper box. */
+  p,
+  li,
+  td {
+    overflow-wrap: break-word;
+  }
+}

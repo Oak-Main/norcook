@@ -2,19 +2,15 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import type { Metadata } from 'next'
-import {
-  ArrowLeft,
-  ChefHat,
-  Clock,
-  Flame,
-  Lightbulb,
-} from 'lucide-react'
+import { ArrowLeft, Clock, Flame } from 'lucide-react'
 import { RECIPES, getRecipe, getRegion } from '@/lib/recipes'
 import { getRecipeSafety } from '@/lib/recipe-safety'
 import { absoluteUrl } from '@/lib/site'
+import { adaptNorcookRecipe } from '@/lib/cooking/adapters/norcook'
 import { SiteHeader } from '@/components/site-header'
 import { SiteFooter } from '@/components/site-footer'
-import { RecommendedTools } from '@/components/recommended-tools'
+import { CookRecipeBody } from '@/components/cook/cook-recipe-body'
+import { RecipePlainBody } from '@/components/recipe-plain-body'
 import { RecipeSafetyReview } from '@/components/recipe-safety-review'
 import { RecipeViewTracker } from '@/components/recipe-view-tracker'
 
@@ -62,6 +58,15 @@ export default async function RecipePage({
   const region = getRegion(recipe.region)
   const history = recipe.history ?? []
   const safety = getRecipeSafety(recipe.slug)
+  // Adapt once, on the server. The revision is computed here so the client
+  // never has to recompute it, which keeps the server and client markup
+  // identical and avoids a hydration mismatch.
+  const cook = adaptNorcookRecipe({
+    slug: recipe.slug,
+    name: recipe.name,
+    ingredients: recipe.ingredients,
+    steps: recipe.steps,
+  })
   const jsonLd = {
     '@context': 'https://schema.org',
     '@type': 'Recipe',
@@ -89,18 +94,26 @@ export default async function RecipePage({
           }}
         />
         {/* Massive header image */}
-        <section className="relative -mt-16 h-[70vh] min-h-[480px] w-full overflow-hidden">
-          <Image
-            src={recipe.image || '/images/recipe-header.webp'}
-            alt={recipe.name}
-            fill
-            priority
-            sizes="100vw"
-            className="object-cover"
-          />
-          <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/40 to-black/50" />
+        <section
+          data-recipe-hero=""
+          className="relative -mt-16 h-[70vh] min-h-[480px] w-full overflow-hidden"
+        >
+          <div data-recipe-hero-media="" className="absolute inset-0">
+            <Image
+              src={recipe.image || '/images/recipe-header.webp'}
+              alt={recipe.name}
+              fill
+              priority
+              sizes="100vw"
+              className="object-cover"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/40 to-black/50" />
+          </div>
 
-          <div className="absolute inset-x-0 bottom-0">
+          <div
+            data-recipe-hero-content=""
+            className="absolute inset-x-0 bottom-0"
+          >
             <div className="mx-auto max-w-4xl px-4 pb-12 sm:px-6">
               {region && (
                 <span className="inline-flex items-center gap-2 rounded-full border border-white/25 bg-white/10 px-4 py-1.5 text-[11px] font-medium uppercase tracking-[0.2em] text-white backdrop-blur-md">
@@ -158,77 +171,32 @@ export default async function RecipePage({
 
         {/* Two-column: Ingredients + Instructions */}
         <section className="mx-auto max-w-4xl px-4 py-8 sm:px-6">
-          <div className="grid gap-12 lg:grid-cols-[0.9fr_1.4fr]">
-            {/* Ingredients + tools rail */}
-            <div className="lg:sticky lg:top-24 lg:self-start">
-              <h2 className="flex items-center gap-2 font-display text-xl font-bold tracking-tight text-foreground">
-                <ChefHat className="size-5 text-primary" />
-                Ingredients
-              </h2>
-              <ul className="mt-5 flex flex-col gap-3">
-                {recipe.ingredients?.map((ing) => (
-                  <li
-                    key={ing}
-                    className="flex items-start gap-3 border-b border-border pb-3 text-sm leading-relaxed text-foreground/85 last:border-0"
-                  >
-                    <span className="mt-1.5 size-1.5 shrink-0 rounded-full bg-accent" />
-                    {ing}
-                  </li>
-                ))}
-              </ul>
-
-              {recipe.tools && recipe.tools.length > 0 && (
-                <div className="mt-8">
-                  <RecommendedTools tools={recipe.tools} />
-                </div>
-              )}
-            </div>
-
-            {/* Instructions */}
-            <div>
-              <h2 className="font-display text-xl font-bold tracking-tight text-foreground">
-                Step-by-Step Instructions
-              </h2>
-              <ol className="mt-5 flex flex-col gap-6">
-                {recipe.steps?.map((step, i) => (
-                  <li key={i} className="flex gap-4">
-                    <span className="flex size-8 shrink-0 items-center justify-center rounded-full bg-primary text-sm font-semibold text-primary-foreground">
-                      {i + 1}
-                    </span>
-                    <p className="pt-1 text-[15px] leading-[1.75] text-foreground/85">
-                      {step}
-                    </p>
-                  </li>
-                ))}
-              </ol>
-
-              {/* Chef's Tips callouts */}
-              {recipe.chefTips && recipe.chefTips.length > 0 && (
-                <div className="mt-10 space-y-4">
-                  {recipe.chefTips.map((tip, i) => (
-                    <div
-                      key={i}
-                      className="flex gap-3 rounded-xl border border-accent/40 bg-accent/10 p-5"
-                    >
-                      <Lightbulb className="size-5 shrink-0 text-accent" />
-                      <div>
-                        <p className="text-xs font-semibold uppercase tracking-wider text-accent">
-                          Chef&apos;s Tip
-                        </p>
-                        <p className="mt-1 text-sm leading-relaxed text-foreground/85">
-                          {tip}
-                        </p>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              )}
-            </div>
+          <div
+            data-cook-grid=""
+            className="grid gap-12 lg:grid-cols-[0.9fr_1.4fr]"
+          >
+            {cook.supported ? (
+              <CookRecipeBody
+                packet={cook.packet}
+                chefTips={recipe.chefTips}
+                tools={recipe.tools}
+              />
+            ) : (
+              <RecipePlainBody
+                ingredients={recipe.ingredients}
+                steps={recipe.steps}
+                chefTips={recipe.chefTips}
+                tools={recipe.tools}
+              />
+            )}
           </div>
         </section>
 
         {/* More from the index */}
-        <section className="mx-auto max-w-4xl px-4 py-12 sm:px-6">
+        <section
+          data-cook-keep-off-print=""
+          className="mx-auto max-w-4xl px-4 py-12 sm:px-6"
+        >
           <div className="rounded-2xl border border-border bg-card p-8 text-center">
             <h3 className="font-display text-2xl font-bold tracking-tight text-foreground">
               Keep exploring

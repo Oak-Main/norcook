@@ -3,6 +3,7 @@ import { ConsentProvider } from '@/components/analytics/consent-provider'
 import { ThemeProvider } from '@/components/theme-provider'
 import { SITE_DESCRIPTION, SITE_NAME, SITE_URL } from '@/lib/site'
 import './globals.css'
+import './cook.css'
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),

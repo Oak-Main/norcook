@@ -12,6 +12,8 @@
     "start": "next start",
     "lint": "eslint . --max-warnings=0",
     "typecheck": "tsc --noEmit",
+    "test:unit": "vitest run",
+    "test:unit:watch": "vitest",
     "check:content": "node scripts/check-content.mjs",
     "check:images": "node scripts/check-image-budgets.mjs",
     "optimize:images": "node scripts/optimize-images.mjs",
@@ -19,7 +21,7 @@
     "test:e2e": "playwright test",
     "test:performance:mobile": "lhci autorun --config=lighthouserc.mobile.cjs",
     "test:performance:desktop": "lhci autorun --config=lighthouserc.desktop.cjs",
-    "release:check": "pnpm lint && pnpm typecheck && pnpm check:content && pnpm check:images && pnpm audit:dependencies && pnpm build && pnpm test:e2e"
+    "release:check": "pnpm lint && pnpm typecheck && pnpm check:content && pnpm check:images && pnpm test:unit && pnpm audit:dependencies && pnpm build && pnpm test:e2e"
   },
   "dependencies": {
     "@base-ui/react": "^1.5.0",
@@ -46,6 +48,7 @@
     "postcss": "^8.5",
     "sharp": "^0.35.3",
     "tailwindcss": "^4.2.0",
-    "typescript": "5.7.3"
+    "typescript": "5.7.3",
+    "vitest": "^5.0.5"
   }
 }

@@ -32,7 +32,17 @@ export function ConsentProvider({ children }: { children: React.ReactNode }) {
     process.env.NEXT_PUBLIC_ANALYTICS_ENABLED === 'true'
 
   useEffect(() => {
-    const stored = window.localStorage.getItem(STORAGE_KEY)
+    // Storage can be blocked outright (private browsing, sandboxed iframes,
+    // disabled cookies). This provider wraps every page, so an unguarded read
+    // here took the whole site down to the error boundary. Mirrors the guards
+    // already used in `theme-provider.tsx` and the root layout theme script:
+    // a blocked store means "no stored choice", never a crash.
+    let stored: string | null = null
+    try {
+      stored = window.localStorage.getItem(STORAGE_KEY)
+    } catch {
+      return
+    }
     if (stored === 'essential' || stored === 'analytics') {
       // Browser-only consent is hydrated after the server render to avoid
       // reading localStorage during SSR.
@@ -43,7 +53,12 @@ export function ConsentProvider({ children }: { children: React.ReactNode }) {
 
   const choose = useCallback(
     (nextChoice: Exclude<ConsentChoice, 'unset'>) => {
-      window.localStorage.setItem(STORAGE_KEY, nextChoice)
+      // The choice still applies for this visit even if it cannot be stored.
+      try {
+        window.localStorage.setItem(STORAGE_KEY, nextChoice)
+      } catch {
+        /* storage blocked; the in-memory choice stands */
+      }
       setChoice(nextChoice)
       setSettingsOpen(false)
       if (nextChoice === 'analytics' && analyticsConfigured) {

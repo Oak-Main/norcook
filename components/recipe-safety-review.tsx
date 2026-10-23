@@ -5,6 +5,7 @@ export function RecipeSafetyReview({ safety }: { safety: RecipeSafety }) {
   return (
     <section
       aria-labelledby="food-safety-heading"
+      data-recipe-safety=""
       className="mx-auto max-w-4xl px-4 py-4 sm:px-6"
     >
       <div className="rounded-2xl border border-amber-500/40 bg-amber-500/10 p-6">
