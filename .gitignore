@@ -16,3 +16,8 @@ test-results/
 
 # Pilot review evidence (screenshots, print PDFs)
 review/
+
+# Generated handoff archives
+norcook-cook-companion-pilot-*.zip
+norcook-cook-companion-pilot-*.sha256
+norcook-cook-companion-pilot-*.manifest.txt
