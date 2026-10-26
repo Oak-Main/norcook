@@ -19,6 +19,8 @@
     "check:sitemap": "playwright test tests/e2e/site.spec.ts --grep \"sitemap\"",
     "optimize:images": "node scripts/optimize-images.mjs",
     "audit:dependencies": "pnpm audit --prod --audit-level=high",
+    "check:security-floor": "node scripts/check-security-floor.mjs",
+    "smoke:production": "node scripts/smoke-production.mjs",
     "test:e2e": "playwright test",
     "test:performance:mobile": "node scripts/run-lighthouse.mjs mobile",
     "test:performance:desktop": "node scripts/run-lighthouse.mjs desktop",
@@ -31,7 +33,7 @@
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "lucide-react": "^1.16.0",
-    "next": "16.3.6",
+    "next": "16.4.3",
     "react": "^19",
     "react-dom": "^19",
     "tailwind-merge": "^3.3.1",
@@ -49,7 +51,7 @@
     "eslint-config-next": "16.3.6",
     "lighthouse": "13.4.1",
     "postcss": "^8.5.26",
-    "sharp": "0.35.4",
+    "sharp": "0.35.5",
     "tailwindcss": "^4.2.0",
     "typescript": "5.7.3"
   }
