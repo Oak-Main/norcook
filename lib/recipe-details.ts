@@ -344,16 +344,16 @@ export const RECIPE_DETAILS: Record<string, RecipeDetail> = {
     steps: [
       'Tie the roast into an even shape and rub all over with the salt and pepper.',
       'Brown it well in the butter in a hot pan, turning to colour every side.',
-      'Transfer to a roasting tin with the carrot, onion and rosemary, pour in the wine and stock, and roast at 125°C until the internal temperature reaches 58°C.',
+      'Transfer to a roasting tin with the carrot, onion and rosemary, pour in the wine and stock, and roast at 163°C (325°F) until a food thermometer inserted into the thickest part reads at least 71°C (160°F). Keep the probe clear of any bone.',
       'Wrap in foil and let rest for 15 minutes while you finish the sauce.',
       'Strain the pan juices into a pot and simmer with the double cream and a spoonful of rowanberry jelly until glossy.',
       'Carve into thick slices and spoon the sauce over to serve.',
     ],
     chefTips: [
-      'Venison is lean and dries fast — a low 125°C oven and a pull at 58°C keep the centre rosy, and the carryover under the foil settles it to a perfect medium-rare.',
+      'Venison is lean, so check the thickest part with a food thermometer and let the roast rest before carving. Do not rely on colour or an assumed rise during resting to judge safety.',
     ],
     tools: [
-      { name: 'Meat thermometer', note: 'Catches the exact 58°C pull point for rosy meat.' },
+      { name: 'Meat thermometer', note: 'Checks the centre reaches at least 71°C (160°F).' },
       { name: 'Heavy roasting tin', note: 'Holds the roast, aromatics and wine for even braising.' },
       { name: 'Butcher\'s twine', note: 'Ties the leg evenly so it cooks uniformly.' },
     ],
