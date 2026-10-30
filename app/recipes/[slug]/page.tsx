@@ -18,7 +18,7 @@ import {
 import { absoluteUrl, CONTENT_REVIEW_DATE } from '@/lib/site'
 import { recipeSeoDescription, recipeSeoTitle } from '@/lib/seo'
 import { SiteHeader } from '@/components/site-header'
-import { PILOT_HERO, PILOT_SLUG, pilotJsonld, renderPilotArticle } from '@/lib/packet-pilot'
+import { PILOT_HERO, PILOT_SLUG, pilotDescription, pilotJsonld, renderPilotArticle } from '@/lib/packet-pilot'
 import { PacketPrintHandler } from '@/components/packet-print'
 import { SiteFooter } from '@/components/site-footer'
 import { RecommendedTools } from '@/components/recommended-tools'
@@ -26,6 +26,7 @@ import { RecipeSafetyReview } from '@/components/recipe-safety-review'
 import { RecipeProvenanceBlock } from '@/components/recipe-provenance'
 import { SaveRecipeButton } from '@/components/save-recipe-button'
 import { ImageOpsFigure } from '@/components/imageops-visual'
+import { RecipeVisuals } from '@/components/recipe-visuals'
 import {
   NUTRITION_ATTRIBUTION,
   NUTRITION_FETCHED_AT,
@@ -85,7 +86,7 @@ export async function generateMetadata({
   // Pilot route: metadata follows the packet (real hero, packet title/desc).
   if (slug === PILOT_SLUG) {
     const ld = pilotJsonld()
-    const desc = String(ld.description ?? '').replace(/s+/g, ' ').slice(0, 185)
+    const desc = pilotDescription()
     const title = String(ld.name ?? 'Kanelsnurrer')
     return {
       title,
@@ -334,6 +335,7 @@ export default async function RecipePage({
                 </p>
               ) : null}
               {recipe.slug === 'gravlaks' && <ImageOpsFigure id="salmon" />}
+              <RecipeVisuals slug={recipe.slug} stage="ingredient" />
 
               {recipe.tools && recipe.tools.length > 0 && (
                 <div className="mt-8">
@@ -360,6 +362,7 @@ export default async function RecipePage({
                 ))}
               </ol>
               {recipe.slug === 'kanelsnurrer' && <ImageOpsFigure id="shaping" />}
+              <RecipeVisuals slug={recipe.slug} stage="method" />
 
               {/* Chef's Tips callouts */}
               {recipe.chefTips && recipe.chefTips.length > 0 && (

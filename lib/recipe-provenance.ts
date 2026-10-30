@@ -86,7 +86,15 @@ export const RECIPE_PROVENANCE: Record<string, RecipeProvenance> = {
     note: 'Written around commercially cold-smoked char. Cold smoking is treated here as a flavour step, not a preservation step.',
   },
   skillingsboller: {
+    checkedOn: '2026-10-30',
+    contentUpdatedOn: '2026-10-30',
+    sources: [{ label: 'Raw flour and dough', url: 'https://www.cdc.gov/food-safety/foods/no-raw-dough.html', publisher: 'U.S. Centers for Disease Control and Prevention' }],
     note: 'Quantities follow common Bergen bakery proportions rather than any single documented original; the cardamom level is a deliberate editorial choice and is heavier than most Swedish versions.',
+  },
+  eplekake: {
+    checkedOn: '2026-10-30',
+    contentUpdatedOn: '2026-10-30',
+    note: 'The method distinguishes the 150 g caster sugar for the batter from the separate 2 tbsp sugar for the apples. Quantities and baking schedule are unchanged; this was a source consistency check, not a kitchen test.',
   },
   lutefisk: {
     note: 'Written for pre-soaked lutefisk bought ready to cook. The lye treatment itself is a producer process and is described as history, not as instructions.',

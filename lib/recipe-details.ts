@@ -908,7 +908,7 @@ export const RECIPE_DETAILS: Record<string, RecipeDetail> = {
       'Pearl sugar, to finish',
     ],
     steps: [
-      'Cream the softened butter and sugar until pale and fluffy, then beat in the eggs one at a time.',
+      'Cream the 150 g softened butter with the 150 g caster sugar until pale and fluffy, then beat in the eggs one at a time. Keep the separate 2 tbsp sugar for the apples.',
       'Sift in the flour and baking powder and fold gently into a smooth batter.',
       'Spoon into a greased 24 cm springform pan and level the top.',
       'Toss the apple slices with the cinnamon and sugar, then press them vertically into the batter and scatter pearl sugar over the surface.',
