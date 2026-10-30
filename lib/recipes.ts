@@ -75,7 +75,7 @@ const BASE_RECIPES: Recipe[] = [
     ],
     chefTips: [
       'Grind your cardamom fresh from whole pods. Pre-ground powder loses its citrus-eucalyptus lift within weeks and it is the single most important flavour here.',
-      'Underbake by a minute rather than over. The residual heat sets the crumb while keeping that signature molten spiral.',
+      'Follow the baking time and temperature above; do not deliberately underbake. The dough should be baked through before serving, and raw dough or egg glaze should not be tasted.',
     ],
     tools: [
       { name: 'Danish dough whisk', note: 'Blends wet, enriched doughs without overworking the gluten.' },
@@ -123,7 +123,7 @@ const BASE_RECIPES: Recipe[] = [
     region: 'vestlandet',
     description:
       'Fjord salmon cured with dill, salt and sugar until silky and translucent, served with a sweet mustard sauce.',
-    image: '/images/dish-gravlaks.png',
+    image: '/assets/img/norcook-gravlaks-hero-20261030.webp',
     cookingTime: '48 hr cure',
     difficulty: 'Easy',
     mainIngredients: ['Salmon fillet', 'Fresh dill', 'Sea salt', 'Sugar', 'White pepper'],
@@ -1055,7 +1055,7 @@ const BASE_RECIPES: Recipe[] = [
     region: 'modern-viral',
     description:
       'Knotted cinnamon buns with a cardamom crumb — the twisted sibling of the skillingsbolle that rules cafés.',
-    image: '/images/recipes/kanelsnurrer.png',
+    image: '/assets/img/norcook-kanelsnurrer-hero-20261030.webp',
     cookingTime: '2 hr 20 min',
     difficulty: 'Moderate',
     mainIngredients: ['Wheat flour', 'Cardamom', 'Cinnamon', 'Butter', 'Pearl sugar'],

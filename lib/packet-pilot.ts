@@ -12,11 +12,12 @@
  *   node scripts/compose-presentation.mjs --all-final --write  (Recipe Finalz)
  */
 import packetJson from '../content/packets/kanelsnurrer.json'
+import { packetVisualMarkup } from './recipe-visual-markup'
 
 export const PILOT_SLUG = 'kanelsnurrer'
-export const PILOT_HERO = '/images/recipes/kanelsnurrer.webp' // 1024 × 1024
+export const PILOT_HERO = '/assets/img/norcook-kanelsnurrer-hero-20261030.webp' // 1200 × 800
 
-/** The site's own real photograph, already served at this path. */
+/** Project-generated illustration; the caption discloses its origin. */
 const ORIGIN = 'https://www.norcook.app'
 
 interface Packet {
@@ -32,24 +33,29 @@ export function pilotJsonld(): Record<string, unknown> {
   ld.image = [ORIGIN + PILOT_HERO]
   // Nothing visible to match — never ship crowd data.
   delete ld.aggregateRating
+  // The shared governance record has no approved public author yet.
+  delete ld.author
   return ld
+}
+
+/** Keep the packet's wording; collapse whitespace, never letters. */
+export function pilotDescription(): string {
+  return String(pilotJsonld().description ?? '').replace(/\s+/g, ' ').trim().slice(0, 185)
 }
 
 /** Article HTML for the pilot route; throws on any skeleton drift. */
 export function renderPilotArticle(): string {
   let body = p.skeleton
-  const heroAlt =
-    body.match(/<figure data-block="hero"><img[^>]*alt="([^"]*)"/)?.[1] ?? p.meta.slug
-  const heroCap =
-    body.match(/<figure data-block="hero">[\s\S]*?<figcaption>([\s\S]*?)<\/figcaption>/)?.[1] ?? ''
-  const heroImg = `<img src="${PILOT_HERO}" width="1024" height="1024" style="aspect-ratio:4/3;object-fit:cover" alt="${heroAlt}" fetchpriority="high" decoding="async">`
+  const heroAlt = 'Glossy cinnamon knots with twisted bands cooling on a rack'
+  const heroCap = 'AI-created illustration; your finished bake may differ.'
+  const heroImg = `<img src="${PILOT_HERO}" width="1200" height="800" data-recipe-visual="norcook-kanelsnurrer-hero-20261030.webp" style="aspect-ratio:3/2;object-fit:cover" alt="${heroAlt}" fetchpriority="high" decoding="async">`
   body = body.replace(
     /<figure data-block="hero">[\s\S]*?<\/figure>/,
     `<figure data-block="hero">${heroImg}${heroCap ? `<figcaption>${heroCap}</figcaption>` : ''}</figure>`
   )
   body = body.replace(
     /<figure data-shot="CARD"><img[^>]*><\/figure>/,
-    `<figure data-shot="CARD"><img src="${PILOT_HERO}" width="1024" height="1024" style="aspect-ratio:1/1" alt="${heroAlt}" fetchpriority="high" decoding="async"></figure>`
+    `<figure data-shot="CARD"><img src="${PILOT_HERO}" width="1200" height="800" style="aspect-ratio:1/1;object-fit:cover" alt="${heroAlt}" loading="lazy" decoding="async"></figure>`
   )
   // Real-only media: unmapped shot placeholders are stripped as whole tags;
   // shot-slot figures left without an image are removed whole (their captions
@@ -78,7 +84,7 @@ export function renderPilotArticle(): string {
   const CARD_ANCHOR = '<section class="rpc-card"'
   if (!body.includes(CARD_ANCHOR))
     throw new Error('pilot packet drift: recipe card anchor missing')
-  body = body.replace(CARD_ANCHOR, VIDEO + CARD_ANCHOR)
+  body = body.replace(CARD_ANCHOR, packetVisualMarkup() + VIDEO + CARD_ANCHOR)
   // Recipe JSON-LD from the packet, after the article per site convention.
   const ld = `<script type="application/ld+json">${JSON.stringify(pilotJsonld()).replace(/</g, '\\u003c')}</script>`
   return body + ld
