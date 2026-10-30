@@ -84,16 +84,16 @@ export const RECIPE_DETAILS: Record<string, RecipeDetail> = {
     steps: [
       'Rub the reindeer roast all over with the salt and pepper, then sear in the butter in a hot pan until deeply browned on every side.',
       'Transfer to a baking dish with the chopped carrots and onion, pour in the game stock, and insert a probe thermometer into the centre of the meat.',
-      'Roast at 125°C (255°F) until the internal temperature reaches 60°C (140°F) for medium-rare.',
+      'Roast at 163°C (325°F) until a food thermometer inserted into the thickest part reads at least 74°C (165°F). Keep the probe clear of any bone.',
       'Wrap the roast loosely in foil and let it rest for 15 to 20 minutes so the juices settle.',
       'Whisk the pan drippings with the sour cream and brown cheese and simmer for 5 minutes, then slice the roast and serve with the gravy.',
     ],
     chefTips: [
-      'Reindeer is exceptionally lean, so pull it at 58°C and let carryover heat carry it to 60°C — a few minutes beyond that and the meat turns dry and livery.',
+      'Reindeer is lean, so use a food thermometer to check the thickest part and rest the roast before carving. Do not rely on colour or an assumed temperature rise during resting to judge safety.',
       'Grate or thinly shave the brown cheese before it goes in; it melts into the cream evenly instead of catching in the pan.',
     ],
     tools: [
-      { name: 'Leave-in meat thermometer', note: 'Guides the lean roast to a precise medium-rare.' },
+      { name: 'Leave-in meat thermometer', note: 'Checks the thickest part reaches at least 74°C (165°F).' },
       { name: 'Heavy roasting dish', note: 'Holds the stock and vegetables through the slow roast.' },
       { name: 'Balloon whisk', note: 'Melts the brown cheese smoothly into the sauce.' },
     ],
