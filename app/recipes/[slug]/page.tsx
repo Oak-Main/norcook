@@ -260,6 +260,12 @@ export default async function RecipePage({
           </div>
         </section>
 
+        {recipe.slug === 'gravlaks' && (
+          <p className="mx-auto max-w-4xl px-4 pt-3 text-sm text-muted-foreground sm:px-6">
+            Hero image: AI-created serving illustration; your finished dish may differ.
+          </p>
+        )}
+
         <div className="mx-auto max-w-4xl px-4 py-6 sm:px-6">
           <Link
             href="/#recipes"
