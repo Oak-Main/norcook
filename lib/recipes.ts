@@ -296,13 +296,13 @@ const BASE_RECIPES: Recipe[] = [
     name: 'Reinsdyrstek',
     region: 'sapmi',
     description:
-      'Roast saddle of reindeer with a juniper-and-thyme crust, served pink with a glossy game sauce.',
+      'Roast saddle of reindeer with a juniper-and-thyme crust, served with a glossy game sauce.',
     image: '/images/recipes/reinsdyrstek.png',
     cookingTime: '1 hr 50 min',
     difficulty: 'Advanced',
     mainIngredients: ['Reindeer saddle', 'Juniper', 'Thyme', 'Game stock', 'Butter'],
     history: [
-      'The roast reindeer that crowns a northern Christmas table is a study in restraint: lean, dark meat cooked barely past rare, its wild-herb sweetness carried by a sauce reduced from bones and forest berries.',
+      'The roast reindeer that crowns a northern Christmas table is a study in restraint: lean, dark meat with wild-herb sweetness, carried by a sauce reduced from bones and forest berries.',
     ],
   },
   {
