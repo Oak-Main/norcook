@@ -131,6 +131,8 @@ test('emits evidence-backed Recipe JSON-LD across a sample of pages', async ({ p
     // page-level content/evidence/schema change record exists.
     if (slug === 'gravlaks') {
       expect(recipe.dateModified, slug).toBe('2026-07-21')
+    } else if (slug === 'skillingsboller') {
+      expect(recipe.dateModified, slug).toBe('2026-10-30')
     } else {
       expect(recipe.dateModified, slug).toBeUndefined()
     }
@@ -151,11 +153,14 @@ test('every ordinary recipe carries an evidence block', async ({ page }) => {
   ).toBeVisible()
   await expect(page.getByText('Content last checked')).toBeVisible()
   await expect(page.getByText(/“checked” records an editorial check/)).toBeVisible()
-  await expect(
-    page.getByText('No page-level sources are recorded for this recipe yet.'),
-  ).toBeVisible()
+  await expect(page.getByRole('link', { name: 'Raw flour and dough' })).toHaveAttribute(
+    'href', 'https://www.cdc.gov/food-safety/foods/no-raw-dough.html',
+  )
   // The editorial policy forbids claiming a page was reviewed.
   await expect(page.getByText('Last reviewed')).toHaveCount(0)
+  // Retain the empty-source contract on an unchanged recipe without citations.
+  await page.goto('/recipes/vafler')
+  await expect(page.getByText('No page-level sources are recorded for this recipe yet.')).toBeVisible()
 })
 
 test('region hubs are real pages with their own links and evidence', async ({
@@ -270,7 +275,9 @@ test('sitemap emits only page-specific, published freshness dates', async ({ req
   expect(entries.get('/privacy')).toContain('2026-08-23')
   expect(entries.get('/terms')).toContain('2026-08-23')
   expect(entries.get('/recipes/gravlaks')).toContain('2026-07-21')
-  expect(entries.get('/recipes/skillingsboller')).toBeUndefined()
+  expect(entries.get('/recipes/skillingsboller')).toContain('2026-10-30')
+  expect(entries.get('/recipes/eplekake')).toContain('2026-10-30')
+  expect(entries.get('/recipes/vafler')).toBeUndefined()
   expect(entries.get('/regions/sapmi')).toBeUndefined()
   expect(entries.get('/seasons/jul')).toBeUndefined()
 })
