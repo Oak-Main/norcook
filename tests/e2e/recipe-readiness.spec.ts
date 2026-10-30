@@ -1,6 +1,14 @@
 import { test, expect } from '@playwright/test'
 import visuals from '../../lib/recipe-visuals.json'
 
+test('Kanelsnurrer index card follows the serving packet schedule and ingredient set', async ({ page }) => {
+  await page.goto('/regions/modern-viral')
+  const card = page.locator('article').filter({ has: page.getByRole('heading', { name: 'Kanelsnurrer', exact: true }) })
+  await expect(card).toContainText('3–3¾ hr (incl. cooling)')
+  await expect(card).not.toContainText('Pearl sugar')
+  await expect(card.getByRole('link', { name: 'View Recipe' })).toHaveAttribute('href', '/recipes/kanelsnurrer')
+})
+
 for (const slug of ['skillingsboller', 'eplekake', 'gravlaks', 'kanelsnurrer']) {
   test(`${slug}: all new illustration placements load and disclose AI origin`, async ({ page }) => {
     await page.goto(`/recipes/${slug}`)
