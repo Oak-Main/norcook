@@ -1,6 +1,7 @@
 # Reproducible release gate
 
-The supported local and CI runtime is Node 22.19.0 or later with pnpm 11.9.0.
+The supported local runtime is Node 22.19.0 or later. CI runs Node 24 to match
+the Vercel production runtime (24.x). Both use pnpm 11.9.0.
 The performance gate uses the Playwright-pinned Chromium installed by the
 browser-install step below, unless `LIGHTHOUSE_CHROME_PATH` explicitly selects
 a managed browser.
