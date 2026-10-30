@@ -23,6 +23,13 @@ for (const slug of ['skillingsboller', 'eplekake', 'gravlaks', 'kanelsnurrer']) 
       expect(source).toContain(asset.file)
     }
     await expect(page.getByText(/AI-created illustration/).first()).toBeVisible()
+    if (slug === 'gravlaks') {
+      const heroDisclosure = page.getByText('Hero image: AI-created serving illustration; your finished dish may differ.', { exact: true })
+      await heroDisclosure.scrollIntoViewIfNeeded()
+      await expect(heroDisclosure).toBeVisible()
+      const main = await page.locator('main').innerText()
+      expect(main.indexOf('Hero image: AI-created')).toBeLessThan(main.indexOf('Read before preparing this recipe'))
+    }
   })
 }
 test('kanelsnurrer: metadata preserves words and structured data matches the packet', async ({ page }) => {
