@@ -1056,9 +1056,9 @@ const BASE_RECIPES: Recipe[] = [
     description:
       'Knotted cinnamon buns with a cardamom crumb — the twisted sibling of the skillingsbolle that rules cafés.',
     image: '/assets/img/norcook-kanelsnurrer-hero-20261030.webp',
-    cookingTime: '2 hr 20 min',
+    cookingTime: '3–3¾ hr (incl. cooling)',
     difficulty: 'Moderate',
-    mainIngredients: ['Wheat flour', 'Cardamom', 'Cinnamon', 'Butter', 'Pearl sugar'],
+    mainIngredients: ['Wheat flour', 'Cardamom', 'Cinnamon', 'Butter', 'Milk', 'Egg'],
     history: [
       'The knotted cinnamon twist has become the signature bake of the new Nordic café — same cardamom dough as the classic bun, but folded and looped into an intricate knot that shows off the baker\'s hand.',
     ],
