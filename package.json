@@ -15,7 +15,7 @@
     "check:content": "node scripts/check-content.mjs",
     "check:images": "node scripts/check-image-budgets.mjs",
     "check:visuals": "node scripts/imageops-release.mjs && node --test scripts/imageops-release.test.mjs",
-    "check:recipes": "node --test scripts/recipe-readiness.test.mjs",
+    "check:recipes": "node --test scripts/recipe-readiness.test.mjs scripts/venison-safety.test.mjs",
     "verify:visuals:live": "node scripts/imageops-release.mjs --live",
     "check:sitemap": "playwright test tests/e2e/site.spec.ts --grep \"sitemap\"",
     "optimize:images": "node scripts/optimize-images.mjs",
